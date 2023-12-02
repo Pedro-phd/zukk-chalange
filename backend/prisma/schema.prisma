@@ -1,0 +1,32 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// enum Crops {
+//   soy
+//   corn
+//   cotton
+//   coffee
+//   sugar_cane
+// }
+
+model Farmer {
+  id               Int      @id @default(autoincrement())
+  name             String   @unique
+  farmName         String   @unique
+  document         String   @unique
+  city             String
+  state            String
+  totalArea        Float
+  agriculturalArea Float
+  vegetationArea   Float
+  plantedCrops     String[]
+}
