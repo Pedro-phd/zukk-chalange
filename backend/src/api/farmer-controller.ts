@@ -24,6 +24,7 @@ import {
   UpdateFarmer,
   DeleteFarmer,
 } from 'src/application/useCases';
+import { NotPermitted } from 'src/application/errors/notPermitted';
 
 @Controller('/farmer')
 export class FarmerController {
@@ -37,7 +38,7 @@ export class FarmerController {
   ) {}
 
   @Get('/')
-  async All(): Promise<Farmer[]> {
+  async All() {
     return this.getAll.get();
   }
 
@@ -90,6 +91,9 @@ export class FarmerController {
       return true;
     } catch (error) {
       console.log(error);
+      if (error instanceof NotPermitted) {
+        throw new HttpException(error.message, HttpStatus.NOT_ACCEPTABLE);
+      }
       throw new Error(error);
     }
   }
@@ -110,7 +114,6 @@ export class FarmerController {
     type: FarmerRequestDto,
   })
   async New(@Body() farmer: FarmerRequest): Promise<number> {
-    console.log(farmer);
     try {
       const idFarmer = await this.createFarmer.create(farmer);
       return idFarmer;
@@ -121,6 +124,9 @@ export class FarmerController {
           error.message,
           HttpStatus.INTERNAL_SERVER_ERROR,
         );
+      }
+      if (error instanceof NotPermitted) {
+        throw new HttpException(error.message, HttpStatus.NOT_ACCEPTABLE);
       }
       throw new Error(error);
     }

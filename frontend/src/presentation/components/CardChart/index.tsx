@@ -24,7 +24,6 @@ const CardChart = ({ title, icon, data }: ICardProps) => {
   useEffect(() => {
     if (ref.current) {
       const chartMiddle = ref?.current?.offsetWidth / 2
-      console.log('-->', ref?.current?.offsetWidth)
       setOffsetChart(chartMiddle)
     }
   }, [])

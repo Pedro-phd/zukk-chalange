@@ -1,5 +1,6 @@
 export type Crops = 'corn' | 'coffee' | 'cotton' | 'sugar_cane'
 export interface IFarmer {
+  id: number
   name: string
   farmName: string
   document: string

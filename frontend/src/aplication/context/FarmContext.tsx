@@ -8,7 +8,7 @@ export interface IData {
   value: number
 }
 
-interface IContext {
+export interface IContext {
   mock: IFarmer[]
   data: IFarmer[]
   totalFarm: number
@@ -18,6 +18,10 @@ interface IContext {
   soilUseData: IData[]
   searchedUser: string | undefined
   setSearchedUser: (data: any) => void
+  farmerData: IFarmer[]
+  setFarmerData: (data: any) => void
+  farmerLoading: boolean
+  setFarmerLoading: (l: boolean) => void
 }
 
 const FarmContext = createContext({} as IContext)
@@ -26,9 +30,13 @@ export function FarmProvider({ children }: any) {
   const [searchedUser, setSearchedUser] = useState<string>()
 
   const mock = FarmerMock
+
+  const [farmerData, setFarmerData] = useState<IFarmer[]>([])
+  const [farmerLoading, setFarmerLoading] = useState<boolean>(true)
+
   const data = searchedUser
-    ? mock.filter((farm) => farm.document === searchedUser)
-    : mock
+    ? farmerData.filter((farm) => farm.document === searchedUser)
+    : farmerData
   const totalFarm = data.length
   const totalHectares = data.reduce((acc, crr) => acc + crr.agriculturalArea, 0)
   const soilUseData = data.map((farm) => ({
@@ -70,6 +78,10 @@ export function FarmProvider({ children }: any) {
         data,
         searchedUser,
         setSearchedUser,
+        setFarmerData,
+        farmerData,
+        farmerLoading,
+        setFarmerLoading,
       }}
     >
       {children}

@@ -4,12 +4,19 @@ import { FarmerRequest } from 'src/domain/model/farmer-request';
 import { ICreateFarmer } from 'src/domain/useCase/icreate-farmer';
 import { FarmerRepository } from 'src/infra/repository/farmer-repository';
 import { FieldAlreadyExists } from '../errors/fieldAlreadyExists';
+import { NotPermitted } from '../errors/notPermitted';
 
 @Injectable()
 export class CreateFarmer implements ICreateFarmer {
   constructor(private readonly farmerRepository: FarmerRepository) {}
 
   async create(farmer: FarmerRequest): Promise<number> {
+    const area = farmer.agriculturalArea + farmer.vegetationArea;
+    if (area > farmer.totalArea)
+      throw new NotPermitted(
+        'A Areal total não deve ser inferior a area de agricultura e de vegetação',
+      );
+
     try {
       const response = await this.farmerRepository.create(farmer);
       return response.id;

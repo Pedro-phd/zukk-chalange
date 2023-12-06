@@ -3,6 +3,7 @@ import { FarmProvider } from '@/aplication/context/FarmContext'
 import { NextUIProvider } from '@nextui-org/react'
 import Dashboard from '@/presentation/pages/Dashboard'
 import { ThemeProvider, createTheme } from '@mui/material'
+import { makeDashboard } from '@/main/factories/pages/makeDashBoard'
 
 export default function Home() {
   const newTheme = createTheme({ palette: { mode: 'dark' } })
@@ -11,9 +12,7 @@ export default function Home() {
     <NextUIProvider>
       <FarmProvider>
         <ThemeProvider theme={newTheme}>
-          <div className="z-10 relative">
-            <Dashboard />
-          </div>
+          <div className="z-10 relative">{makeDashboard()}</div>
           <div className="fixed dark:md:block dark:opacity-70 -bottom-0 -left-[-46%] md:-bottom-[40%] md:-left-[20%] z-0">
             <img
               src="https://nextui.org/gradients/docs-left.png"

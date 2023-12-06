@@ -1,0 +1,20 @@
+version: '3.1'
+
+services:
+
+  db:
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: dbpassword
+      POSTGRES_USER: postgres
+      POSTGRES_DB: zukkdb
+      DATABASE_URL: postgresql://postgres:dbpassword@postgres:5432/zukkdb?schema=public
+    ports:
+      - 5432:5432
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080

@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { useFarmerContext } from '@/aplication/context/FarmContext'
 import {
   Navbar,
@@ -7,13 +8,21 @@ import {
   Autocomplete,
   AutocompleteItem,
   Chip,
-  Divider,
   Button,
 } from '@nextui-org/react'
-import { Dot, Leaf, Plus, Search } from 'lucide-react'
+import { Leaf, Plus, Search } from 'lucide-react'
+import ModalCreate from '../ModalCreate'
+import { ICreateFarmer } from '@/domain/usecases/createFarmer'
 
-const Header = () => {
-  const { mock, setSearchedUser, searchedUser } = useFarmerContext()
+interface IHeaderProps {
+  createFarmer: ICreateFarmer
+}
+
+const Header = ({ createFarmer }: IHeaderProps) => {
+  const { farmerData, setSearchedUser, searchedUser, farmerLoading } =
+    useFarmerContext()
+
+  const [openModal, setOpenModal] = useState(false)
 
   return (
     <Navbar className="p-4">
@@ -22,9 +31,6 @@ const Header = () => {
           src="https://www.brain.agr.br/images/logo.png"
           className="saturate-0 brightness-200 w-24 md:w-36"
         />
-        {/* <p className="font-bold text-inherit text-xl bg-gradient-to-b from-[#9354D2] to-[#653496] text-transparent bg-clip-text">
-          Braing AG
-        </p> */}
         <Chip
           className="flex flex-initial text-xs gap-2"
           endContent={<Leaf size={16} />}
@@ -50,18 +56,29 @@ const Header = () => {
             className="max-w-xs hidden md:flex"
             selectedKey={searchedUser}
             onSelectionChange={setSearchedUser}
+            disabled={farmerLoading}
           >
-            {mock.map((farmer) => (
+            {farmerData.map((farmer) => (
               <AutocompleteItem key={farmer.document} value={farmer.document}>
                 {farmer.name}
               </AutocompleteItem>
             ))}
           </Autocomplete>
-          <Button isIconOnly variant="faded" color="success">
+          <Button
+            isIconOnly
+            variant="faded"
+            color="success"
+            onClick={() => setOpenModal(true)}
+          >
             <Plus />
           </Button>
         </NavbarItem>
       </NavbarContent>
+      <ModalCreate
+        open={openModal}
+        onClose={() => setOpenModal(false)}
+        createFarmer={createFarmer}
+      />
     </Navbar>
   )
 }

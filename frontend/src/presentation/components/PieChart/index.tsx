@@ -11,7 +11,6 @@ const PieChartCustom = ({
   hiddenLabel: boolean
   middle: number
 }) => {
-  console.log('--> -10', middle - 10, middle)
   return (
     <PieChart
       colors={mangoFusionPaletteDark}
@@ -26,9 +25,8 @@ const PieChartCustom = ({
           startAngle: -90,
           endAngle: 180,
           highlightScope: { faded: 'global', highlighted: 'item' },
-          faded: { innerRadius: 30, additionalRadius: -30, color: 'gray' },
+          faded: { innerRadius: 30, additionalRadius: -30 },
           cx: middle - 10,
-          // cx: 136,
         },
       ]}
       slotProps={{
